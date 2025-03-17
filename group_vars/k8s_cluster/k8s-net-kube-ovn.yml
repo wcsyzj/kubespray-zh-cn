@@ -1,18 +1,19 @@
 ---
-# geneve 或 vlan
+
+# geneve or vlan
 kube_ovn_network_type: geneve
 
-# geneve、vxlan 或 stt。注意：使用 vxlan 和 stt 时某些网络策略可能无法生效，且 stt 需要自定义编译 ovs 内核模块
+# geneve, vxlan or stt. ATTENTION: some networkpolicy cannot take effect when using vxlan and stt need custom compile ovs kernel module
 kube_ovn_tunnel_type: geneve
 
-## 支持容器网络的网卡可以是网卡名称或以逗号分隔的正则表达式组，例如：'enp6s0f0,eth.*'，如果为空则使用默认路由的网卡。
+## The nic to support container network can be a nic name or a group of regex separated by comma e.g: 'enp6s0f0,eth.*', if empty will use the nic that the default route use.
 # kube_ovn_iface: eth1
-## 覆盖网络中 pod 网卡使用的 MTU（默认网卡 MTU - 100）
+## The MTU used by pod iface in overlay networks (default iface MTU - 100)
 # kube_ovn_mtu: 1333
 
-## 启用硬件卸载，禁用流量镜像并将网卡设置为物理端口。确保物理端口绑定了一个 IP 地址。
+## Enable hw-offload, disable traffic mirror and set the iface to the physical port. Make sure that there is an IP address bind to the physical port.
 kube_ovn_hw_offload: false
-# 流量镜像
+# traffic mirror
 kube_ovn_traffic_mirror: false
 
 # kube_ovn_pool_cidr_ipv6: fd85:ee78:d8a6:8607::1:0000/112
@@ -29,33 +30,33 @@ kube_ovn_default_logical_gateway: false
 kube_ovn_node_switch_cidr: 100.64.0.0/16
 kube_ovn_node_switch_cidr_ipv6: fd00:100:64::/64
 
-## vlan 配置，设置默认网卡名称和 vlan ID
+## vlan config, set default interface name and vlan id
 # kube_ovn_default_interface_name: eth0
 kube_ovn_default_vlan_id: 100
 kube_ovn_vlan_name: product
 
-## pod 网卡类型，支持：veth-pair 或 internal-port
+## pod nic type, support: veth-pair or internal-port
 kube_ovn_pod_nic_type: veth_pair
 
-## 启用负载均衡器
+## Enable load balancer
 kube_ovn_enable_lb: true
 
-## 启用网络策略支持
+## Enable network policy support
 kube_ovn_enable_np: true
 
-## 启用外部 VPC 支持
+## Enable external vpc support
 kube_ovn_enable_external_vpc: true
 
-## 启用校验和
+## Enable checksum
 kube_ovn_encap_checksum: true
 
-## 启用 SSL
+## enable ssl
 kube_ovn_enable_ssl: false
 
 ## dpdk
 kube_ovn_dpdk_enabled: false
 
-## 启用与现有 IC 数据库服务器的互连
+## enable interconnection to an existing IC database server.
 kube_ovn_ic_enable: false
 kube_ovn_ic_autoroute: true
 kube_ovn_ic_dbhost: "127.0.0.1"

@@ -1,5 +1,5 @@
-## 使用Azure时，您还需要设置以下变量。
-## 有关如何获取这些值的详细信息，请参阅docs/azure.md
+## When azure is used, you need to also set the following variables.
+## see docs/azure.md for details on how to get these values
 
 # azure_cloud:
 # azure_tenant_id:
@@ -15,11 +15,11 @@
 # azure_vnet_resource_group:
 # azure_route_table_name:
 # azure_route_table_resource_group:
-# 支持的值为'standard'或'vmss'
+# supported values are 'standard' or 'vmss'
 # azure_vmtype: standard
 
-## Azure Disk CSI凭据和参数
-## 有关如何获取这些值的详细信息，请参阅docs/azure-csi.md
+## Azure Disk CSI credentials and parameters
+## see docs/azure-csi.md for details on how to get these values
 
 # azure_csi_tenant_id:
 # azure_csi_subscription_id:
@@ -34,7 +34,7 @@
 # azure_csi_use_instance_metadata:
 # azure_csi_tags: "Owner=owner,Team=team,Environment=environment'
 
-## 要启用Azure Disk CSI，请取消注释以下内容
+## To enable Azure Disk CSI, uncomment below
 # azure_csi_enabled: true
 # azure_csi_controller_replicas: 1
 # azure_csi_plugin_image_tag: latest

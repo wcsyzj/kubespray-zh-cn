@@ -1,5 +1,5 @@
 ---
-# 更多配置选项请参见roles/container-engine/containerd/defaults/main.yml
+# Please see roles/container-engine/containerd/defaults/main.yml for more configuration options
 
 # containerd_storage_dir: "/var/lib/containerd"
 # containerd_state_dir: "/run/containerd"
@@ -15,7 +15,7 @@
 #   root: ""
 
 # containerd_additional_runtimes:
-# Kata Containers作为附加运行时的示例：
+# Example for Kata Containers as additional runtime:
 #   - name: kata
 #     type: "io.containerd.kata.v2"
 #     engine: ""
@@ -24,26 +24,26 @@
 # containerd_grpc_max_recv_message_size: 16777216
 # containerd_grpc_max_send_message_size: 16777216
 
-# Containerd调试套接字位置：unix或tcp格式
+# Containerd debug socket location: unix or tcp format
 # containerd_debug_address: ""
 
-# Containerd日志级别
+# Containerd log level
 # containerd_debug_level: "info"
 
-# Containerd日志格式，支持的值：text, json
+# Containerd logs format, supported values: text, json
 # containerd_debug_format: ""
 
-# Containerd调试套接字UID
+# Containerd debug socket UID
 # containerd_debug_uid: 0
 
-# Containerd调试套接字GID
+# Containerd debug socket GID
 # containerd_debug_gid: 0
 
 # containerd_metrics_address: ""
 
 # containerd_metrics_grpc_histogram: false
 
-# 在containerd中定义的镜像仓库
+# Registries defined within containerd.
 # containerd_registries_mirrors:
 #  - prefix: docker.io
 #    mirrors:

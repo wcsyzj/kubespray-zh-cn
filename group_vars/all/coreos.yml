@@ -1,2 +1,2 @@
-## coreos是否需要自动升级，默认为true
+## Does coreos need auto upgrade, default is true
 # coreos_auto_upgrade: true

@@ -1,22 +1,22 @@
-## 外部Hcloud云控制器的值
+## Values for the external Hcloud Cloud Controller
 # external_hcloud_cloud:
 #   hcloud_api_token: ""
 #   token_secret_name: hcloud
-#   with_networks: false # 使用支持网络的hcloud控制器管理器 https://github.com/hetznercloud/hcloud-cloud-controller-manager#networks-support
-#   network_name: # 网络名称/ID：如果您自己管理网络，可能仍然需要让CCM知道私有网络
+#   with_networks: false # Use the hcloud controller-manager with networks support https://github.com/hetznercloud/hcloud-cloud-controller-manager#networks-support
+#   network_name: # network name/ID: If you manage the network yourself it might still be required to let the CCM know about private networks
 #   service_account_name: cloud-controller-manager
 #
 #   controller_image_tag: "latest"
-#   ## 要添加到openstack云控制器管理器daemonset的额外参数字典
-#   ## 格式：
+#   ## A dictionary of extra arguments to add to the openstack cloud controller manager daemonset
+#   ## Format:
 #   ##  external_hcloud_cloud.controller_extra_args:
 #   ##    arg1: "value1"
 #   ##    arg2: "value2"
 #   controller_extra_args: {}
 #
-#   load_balancers_location: # 与load_balancers_network_zone互斥
+#   load_balancers_location: # mutually exclusive with load_balancers_network_zone
 #   load_balancers_network_zone:
-#   load_balancers_disable_private_ingress: # 如果使用基于IPVS的插件，请设置为true https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/docs/load_balancers.md#sample-service-with-networks
-#   load_balancers_use_private_ip: # 如果使用私有网络，请设置为true
+#   load_balancers_disable_private_ingress: # set to true if using IPVS based plugins https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/main/docs/load_balancers.md#sample-service-with-networks
+#   load_balancers_use_private_ip: # set to true if using private networks
 #   load_balancers_enabled:
 #   network_routes_enabled:

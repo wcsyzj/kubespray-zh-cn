@@ -1,117 +1,132 @@
 ---
 # cilium_version: "v1.15.9"
 
-# 日志级别
+# Log-level
 # cilium_debug: false
 
 # cilium_mtu: ""
 # cilium_enable_ipv4: true
 # cilium_enable_ipv6: false
 
-# 启用cilium的L2公告功能以替代Metallb 参考: https://docs.cilium.io/en/v1.14/network/l2-announcements/
+# Enable l2 announcement from cilium to replace Metallb Ref: https://docs.cilium.io/en/v1.14/network/l2-announcements/
 cilium_l2announcements: false
 
-# Cilium agent健康检查端口
+# Cilium agent health port
 # cilium_agent_health_port: "9879"
 
-# 身份分配模式选择如何通过设置存储方式在cilium节点之间共享身份。选项为"crd"或"kvstore"。
-# - "crd"将身份存储在kubernetes中作为CRD（自定义资源定义）。
-#   可以通过以下命令查询：
+# Identity allocation mode selects how identities are shared between cilium
+# nodes by setting how they are stored. The options are "crd" or "kvstore".
+# - "crd" stores identities in kubernetes as CRDs (custom resource definition).
+#   These can be queried with:
 #     `kubectl get ciliumid`
-# - "kvstore"将身份存储在etcd kvstore中。
-# - 为了支持外部工作负载，需要使用"crd"
-#   - 参考: https://docs.cilium.io/en/stable/gettingstarted/external-workloads/#setting-up-support-for-external-workloads-beta
-# - 仅当cilium-operator使用以下任何选项运行时才需要KVStore操作：
+# - "kvstore" stores identities in an etcd kvstore.
+# - In order to support External Workloads, "crd" is required
+#   - Ref: https://docs.cilium.io/en/stable/gettingstarted/external-workloads/#setting-up-support-for-external-workloads-beta
+# - KVStore operations are only required when cilium-operator is running with any of the below options:
 #   - --synchronize-k8s-services
 #   - --synchronize-k8s-nodes
 #   - --identity-allocation-mode=kvstore
-#   - 参考: https://docs.cilium.io/en/stable/internals/cilium_operator/#kvstore-operations
+#   - Ref: https://docs.cilium.io/en/stable/internals/cilium_operator/#kvstore-operations
 # cilium_identity_allocation_mode: kvstore
 
-# Etcd SSL目录
+# Etcd SSL dirs
 # cilium_cert_dir: /etc/cilium/certs
 # kube_etcd_cacert_file: ca.pem
 # kube_etcd_cert_file: cert.pem
 # kube_etcd_key_file: cert-key.pem
 
-# 应用限制
+# Limits for apps
 # cilium_memory_limit: 500M
 # cilium_cpu_limit: 500m
 # cilium_memory_requests: 64M
 # cilium_cpu_requests: 100m
 
-# 覆盖网络模式
+# Overlay Network Mode
 # cilium_tunnel_mode: vxlan
 
-# 负载均衡模式（snat/dsr/hybrid）参考: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#dsr-mode
+# LoadBalancer Mode (snat/dsr/hybrid) Ref: https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#dsr-mode
 # cilium_loadbalancer_mode: snat
 
-# 可选功能
+# Optional features
 # cilium_enable_prometheus: false
-# 如果你想使用hostPort映射，请启用
+# Enable if you want to make use of hostPort mappings
 # cilium_enable_portmap: false
-# 监控聚合级别（none/low/medium/maximum）
+# Monitor aggregation level (none/low/medium/maximum)
 # cilium_monitor_aggregation: medium
-# 监控聚合标志确定哪些TCP标志在首次观察时生成监控通知。
+# The monitor aggregation flags determine which TCP flags which, upon the
+# first observation, cause monitor notifications to be generated.
 #
-# 仅在监控聚合设置为"medium"或更高时有效。
+# Only effective when monitor aggregation is set to "medium" or higher.
 # cilium_monitor_aggregation_flags: "all"
-# Kube Proxy 替换模式（strict/partial）
+# Kube Proxy Replacement mode (strict/partial)
 # cilium_kube_proxy_replacement: partial
 
-# 如果从Cilium < 1.5升级，你可能需要覆盖一些选项以防止服务中断。另请参阅：
+# If upgrading from Cilium < 1.5, you may want to override some of these options
+# to prevent service disruptions. See also:
 # http://docs.cilium.io/en/stable/install/upgrade/#changes-that-may-require-action
 # cilium_preallocate_bpf_maps: false
 
-# `cilium_tofqdns_enable_poller`在1.8中已弃用，在1.9中移除
+# `cilium_tofqdns_enable_poller` is deprecated in 1.8, removed in 1.9
 # cilium_tofqdns_enable_poller: false
 
-# `cilium_enable_legacy_services`在1.6中已弃用，在1.9中移除
+# `cilium_enable_legacy_services` is deprecated in 1.6, removed in 1.9
 # cilium_enable_legacy_services: false
 
-# 集群的唯一ID。在所有连接的集群中必须唯一，并且在1到255的范围内。仅在构建集群网格时相关。
-# 默认未定义此值
+# Unique ID of the cluster. Must be unique across all connected clusters and
+# in the range of 1 and 255. Only relevant when building a mesh of clusters.
+# This value is not defined by default
 # cilium_cluster_id:
 
-# 即使kube_network_plugin不是cilium，也部署cilium。
-# 这使得可以与其他CNI一起部署cilium以替换kube-proxy。
+# Deploy cilium even if kube_network_plugin is not cilium.
+# This enables to deploy cilium alongside another CNI to replace kube-proxy.
 # cilium_deploy_additionally: false
 
-# 自动直接节点路由可用于在集群中通告pod路由，而无需任何隧道（将`cilium_tunnel_mode`设置为`disabled`）。
-# 这仅在所有节点之间具有L2连接时有效。
-# 你还需要指定变量`cilium_native_routing_cidr`以使此功能生效。请参阅cilium文档以获取有关此类设置的更多信息。
+# Auto direct nodes routes can be used to advertise pods routes in your cluster
+# without any tunneling (with `cilium_tunnel_mode` sets to `disabled`).
+# This works only if you have a L2 connectivity between all your nodes.
+# You wil also have to specify the variable `cilium_native_routing_cidr` to
+# make this work. Please refer to the cilium documentation for more
+# information about this kind of setups.
 # cilium_auto_direct_node_routes: false
 
-# 允许显式指定用于本机路由的IPv4 CIDR。
-# 指定后，Cilium假定此CIDR的网络已预先配置，并将发往该范围的流量交给Linux网络堆栈，而不应用任何SNAT。
-# 一般来说，指定本机路由CIDR意味着Cilium可以依赖底层网络堆栈将数据包路由到其目的地。举一个具体的例子，如果Cilium配置为使用直接路由，并且Kubernetes CIDR包含在本机路由CIDR中，用户必须配置路由以到达pod，无论是手动还是通过设置auto-direct-node-routes标志。
+# Allows to explicitly specify the IPv4 CIDR for native routing.
+# When specified, Cilium assumes networking for this CIDR is preconfigured and
+# hands traffic destined for that range to the Linux network stack without
+# applying any SNAT.
+# Generally speaking, specifying a native routing CIDR implies that Cilium can
+# depend on the underlying networking stack to route packets to their
+# destination. To offer a concrete example, if Cilium is configured to use
+# direct routing and the Kubernetes CIDR is included in the native routing CIDR,
+# the user must configure the routes to reach pods, either manually or by
+# setting the auto-direct-node-routes flag.
 # cilium_native_routing_cidr: ""
 
-# 允许显式指定用于本机路由的IPv6 CIDR。
+# Allows to explicitly specify the IPv6 CIDR for native routing.
 # cilium_native_routing_cidr_ipv6: ""
 
-# 启用透明网络加密。
+# Enable transparent network encryption.
 # cilium_encryption_enabled: false
 
-# 加密方法。可以是ipsec或wireguard。
-# 仅在`cilium_encryption_enabled`设置为true时有效。
+# Encryption method. Can be either ipsec or wireguard.
+# Only effective when `cilium_encryption_enabled` is set to true.
 # cilium_encryption_type: "ipsec"
 
-# 启用纯节点到节点流量的加密。
-# 此选项仅在`cilium_encryption_type`设置为`ipsec`时有效。
+# Enable encryption for pure node to node traffic.
+# This option is only effective when `cilium_encryption_type` is set to `ipsec`.
 # cilium_ipsec_node_encryption: false
 
-# 如果你的内核或发行版不支持WireGuard，Cilium agent可以配置为回退到用户空间实现。
-# 当启用此标志并且Cilium检测到内核没有原生支持WireGuard时，它将回退到wireguard-go用户空间实现的WireGuard。
-# 此选项仅在`cilium_encryption_type`设置为`wireguard`时有效。
+# If your kernel or distribution does not support WireGuard, Cilium agent can be configured to fall back on the user-space implementation.
+# When this flag is enabled and Cilium detects that the kernel has no native support for WireGuard,
+# it will fallback on the wireguard-go user-space implementation of WireGuard.
+# This option is only effective when `cilium_encryption_type` is set to `wireguard`.
 # cilium_wireguard_userspace_fallback: false
 
-# IP伪装代理
+# IP Masquerade Agent
 # https://docs.cilium.io/en/stable/concepts/networking/masquerading/
-# 默认情况下，所有从pod发往cilium_native_routing_cidr范围之外的IP地址的数据包都会被伪装
+# By default, all packets from a pod destined to an IP address outside of the cilium_native_routing_cidr range are masqueraded
 # cilium_ip_masq_agent_enable: false
 
-### 从pod发送到属于nonMasqueradeCIDRs中任何CIDR的目的地的数据包将不会被伪装
+### A packet sent from a pod to a destination which belongs to any CIDR from the nonMasqueradeCIDRs is not going to be masqueraded
 # cilium_non_masquerade_cidrs:
 #   - 10.0.0.0/8
 #   - 172.16.0.0/12
@@ -124,25 +139,25 @@ cilium_l2announcements: false
 #   - 198.51.100.0/24
 #   - 203.0.113.0/24
 #   - 240.0.0.0/4
-### 指示是否伪装到链路本地前缀的流量。
-### 如果未设置masqLinkLocal或设置为false，则169.254.0.0/16将附加到非伪装CIDR列表中。
+### Indicates whether to masquerade traffic to the link local prefix.
+### If the masqLinkLocal is not set or set to false, then 169.254.0.0/16 is appended to the non-masquerade CIDRs list.
 # cilium_masq_link_local: false
-### 代理尝试从磁盘重新加载配置的时间间隔
+### A time interval at which the agent attempts to reload config from disk
 # cilium_ip_masq_resync_interval: 60s
 
-### 主机防火墙和策略审计模式
+### Host Firewall and Policy Audit Mode
 # cilium_enable_host_firewall: false
 # cilium_policy_audit_mode: false
 
 # Hubble
-### 启用Hubble但不安装
+### Enable Hubble without install
 # cilium_enable_hubble: false
-### 启用Hubble-ui
-### 默认在启用hubble时安装。要禁用请设置为false
+### Enable Hubble-ui
+### Installed by default when hubble is enabled. To disable set to false
 # cilium_enable_hubble_ui: "{{ cilium_enable_hubble }}
-### 启用Hubble指标
+### Enable Hubble Metrics
 # cilium_enable_hubble_metrics: false
-### 如果cilium_enable_hubble_metrics: true
+### if cilium_enable_hubble_metrics: true
 # cilium_hubble_metrics: {}
 # - dns
 # - drop
@@ -150,26 +165,26 @@ cilium_l2announcements: false
 # - flow
 # - icmp
 # - http
-### 启用Hubble安装
+### Enable Hubble install
 # cilium_hubble_install: false
-### 如果cilium_hubble_install: true，启用自动生成证书
+### Enable auto generate certs if cilium_hubble_install: true
 # cilium_hubble_tls_generate: false
 
-### 调整cilium_hubble_event_buffer_capacity和cilium_hubble_event_queue_size值，以避免在hubble负载过重时丢弃事件
-### Hubble事件缓冲区的容量。提供的值必须是2的整数幂减1且不大于65535
-### （即：1, 3, ..., 2047, 4095, ..., 65535）（默认4095）
+### Tune cilium_hubble_event_buffer_capacity & cilium_hubble_event_queue_size values to avoid dropping events when hubble is under heavy load
+### Capacity of Hubble events buffer. The provided value must be one less than an integer power of two and no larger than 65535
+### (ie: 1, 3, ..., 2047, 4095, ..., 65535) (default 4095)
 # cilium_hubble_event_buffer_capacity: 4095
-### 接收监控事件的通道的缓冲区大小。
+### Buffer size of the channel to receive monitor events.
 # cilium_hubble_event_queue_size: 50
 
-# v1.9+的IP地址管理模式。
+# IP address management mode for v1.9+.
 # https://docs.cilium.io/en/v1.9/concepts/networking/ipam/
 # cilium_ipam_mode: kubernetes
 
-# Cilium agent的额外参数
+# Extra arguments for the Cilium agent
 # cilium_agent_custom_args: []
 
-# 用于添加和挂载到cilium agent的额外卷
+# For adding and mounting extra volumes to the cilium agent
 # cilium_agent_extra_volumes: []
 # cilium_agent_extra_volume_mounts: []
 
@@ -177,67 +192,71 @@ cilium_l2announcements: false
 
 # cilium_operator_replicas: 2
 
-# cilium operator绑定健康检查API的地址
+# The address at which the cillium operator bind health check api
 # cilium_operator_api_serve_addr: "127.0.0.1:9234"
 
-## 一个额外的配置变量字典，添加到cilium-config，格式如下：
+## A dictionary of extra config variables to add to cilium-config, formatted like:
 ##  cilium_config_extra_vars:
 ##    var1: "value1"
 ##    var2: "value2"
 # cilium_config_extra_vars: {}
 
-# 用于添加和挂载到cilium operator的额外卷
+# For adding and mounting extra volumes to the cilium operator
 # cilium_operator_extra_volumes: []
 # cilium_operator_extra_volume_mounts: []
 
-# Cilium Operator的额外参数
+# Extra arguments for the Cilium Operator
 # cilium_operator_custom_args: []
 
-# 集群名称。仅在构建集群网格时相关。
+# Name of the cluster. Only relevant when building a mesh of clusters.
 # cilium_cluster_name: default
 
-# 使Cilium拥有节点上的`/etc/cni/net.d`目录的所有权，将所有非Cilium CNI配置重命名为`*.cilium_bak`。
-# 这确保在Cilium agent停机期间没有Pod可以使用其他CNI插件进行调度。
-# 适用于Cilium v1.10及以上版本。
+# Make Cilium take ownership over the `/etc/cni/net.d` directory on the node, renaming all non-Cilium CNI configurations to `*.cilium_bak`.
+# This ensures no Pods can be scheduled using other CNI plugins during Cilium agent downtime.
+# Available for Cilium v1.10 and up.
 # cilium_cni_exclusive: true
 
-# 配置CNI日志文件的日志文件，保留策略为7天。
-# 通过显式将此字段设置为空来禁用CNI文件日志记录。
-# 适用于Cilium v1.12及以上版本。
+# Configure the log file for CNI logging with retention policy of 7 days.
+# Disable CNI file logging by setting this field to empty explicitly.
+# Available for Cilium v1.12 and up.
 # cilium_cni_log_file: "/var/run/cilium/cilium-cni.log"
 
-# -- 配置cgroup相关配置
-# -- 启用cgroup2文件系统的自动挂载。
-# 当启用`cilium_cgroup_auto_mount`时，cgroup2文件系统将挂载到基础主机上的`cilium_cgroup_host_root`路径以及cilium agent pod内部。
-# 如果用户禁用`cilium_cgroup_auto_mount`，则期望用户已将cgroup2文件系统挂载到指定的`cilium_cgroup_auto_mount`卷，然后该卷将以相同路径挂载到cilium agent pod内部。
-# 适用于Cilium v1.11及以上版本
+# -- Configure cgroup related configuration
+# -- Enable auto mount of cgroup2 filesystem.
+# When `cilium_cgroup_auto_mount` is enabled, cgroup2 filesystem is mounted at
+# `cilium_cgroup_host_root` path on the underlying host and inside the cilium agent pod.
+# If users disable `cilium_cgroup_auto_mount`, it's expected that users have mounted
+# cgroup2 filesystem at the specified `cilium_cgroup_auto_mount` volume, and then the
+# volume will be mounted inside the cilium agent pod at the same path.
+# Available for Cilium v1.11 and up
 # cilium_cgroup_auto_mount: true
-# -- 配置cgroup根目录，cgroup2文件系统在主机上的挂载路径
+# -- Configure cgroup root where cgroup2 filesystem is mounted on the host
 # cilium_cgroup_host_root: "/run/cilium/cgroupv2"
 
-# 指定用于动态调整TCP CT、非TCP CT、NAT和策略BPF映射大小的总系统内存的比例（0.0-1.0）。
+# Specifies the ratio (0.0-1.0) of total system memory to use for dynamic
+# sizing of the TCP CT, non-TCP CT, NAT and policy BPF maps.
 # cilium_bpf_map_dynamic_size_ratio: "0.0"
 
-# -- 启用从端点离开节点的IPv4流量的伪装。
-# 适用于Cilium v1.10及以上版本
+# -- Enables masquerading of IPv4 traffic leaving the node from endpoints.
+# Available for Cilium v1.10 and up
 # cilium_enable_ipv4_masquerade: true
-# -- 启用从端点离开节点的IPv6流量的伪装。
-# 适用于Cilium v1.10及以上版本
+# -- Enables masquerading of IPv6 traffic leaving the node from endpoints.
+# Available for Cilium v1.10 and up
 # cilium_enable_ipv6_masquerade: true
 
-# -- 在eBPF中启用本机IP伪装支持
+# -- Enable native IP masquerade support in eBPF
 # cilium_enable_bpf_masquerade: false
 
-# -- 启用BGP控制平面
+# -- Enable BGP Control Plane
 # cilium_enable_bgp_control_plane: false
 
-# -- 配置负载均衡器IP池
+# -- Configure Loadbalancer IP Pools
 # cilium_loadbalancer_ip_pools:
 #   - name: "blue-pool"
 #     cidrs:
 #       - "10.0.10.0/24"
 
-# -- 配置BGP实例（新的bgpv2 API v1.16+）
+# -- Configure BGP Instances (New bgpv2 API v1.16+)
 # cilium_bgp_cluster_configs:
 #   - name: "cilium-bgp"
 #     spec:
@@ -254,7 +273,7 @@ cilium_l2announcements: false
 #         matchExpressions:
 #           - {key: somekey, operator: NotIn, values: ['never-used-value']}
 
-# -- 配置BGP对等体（新的bgpv2 API v1.16+）
+# -- Configure BGP Peers (New bgpv2 API v1.16+)
 # cilium_bgp_peer_configs:
 #   - name: cilium-peer
 #     spec:
@@ -274,7 +293,7 @@ cilium_l2announcements: false
 #             matchLabels:
 #               advertise: "bgp"
 
-# -- 配置BGP通告（新的bgpv2 API v1.16+）
+# -- Configure BGP Advertisements (New bgpv2 API v1.16+)
 # cilium_bgp_advertisements:
 #   - name: bgp-advertisements
 #     labels:
@@ -295,7 +314,7 @@ cilium_l2announcements: false
 #             matchExpressions:
 #                 - {key: somekey, operator: NotIn, values: ['never-used-value']}
 
-# -- 配置BGP节点配置覆盖（新的bgpv2 API v1.16+）
+# -- Configure BGP Node Config Overrides (New bgpv2 API v1.16+)
 # cilium_bgp_node_config_overrides:
 #   - name: bgp-node-config-override
 #     spec:
@@ -309,7 +328,7 @@ cilium_l2announcements: false
 #           - name: "peer-65000-tor2"
 #             localAddress: fd00:11:0:2::2
 
-# -- 配置BGP对等体（旧版v1.16+）
+# -- Configure BGP Peers (Legacy v1.16+)
 # cilium_bgp_peering_policies:
 #   - name: "01-bgp-peering-policy"
 #     spec:
@@ -323,22 +342,25 @@ cilium_l2announcements: false
 #               matchExpressions:
 #               - {key: somekey, operator: NotIn, values: ['never-used-value']}
 
-# -- 配置直接路由模式是否应通过主机堆栈（true）或直接从BPF（false）路由流量，如果内核支持的话。后者意味着它也将绕过主机命名空间中的netfilter。
+# -- Configure whether direct routing mode should route traffic via
+# host stack (true) or directly and more efficiently out of BPF (false) if
+# the kernel supports it. The latter has the implication that it will also
+# bypass netfilter in the host namespace.
 # cilium_enable_host_legacy_routing: true
 
-# -- 启用远程节点身份的使用。
-# 参考: https://docs.cilium.io/en/v1.7/install/upgrade/#configmap-remote-node-identity
+# -- Enable use of the remote node identity.
+# ref: https://docs.cilium.io/en/v1.7/install/upgrade/#configmap-remote-node-identity
 # cilium_enable_remote_node_identity: true
 
-# -- 启用已知身份的使用。
+# -- Enable the use of well-known identities.
 # cilium_enable_well_known_identities: false
 
 # cilium_enable_bpf_clock_probe: true
 
-# -- 是否启用CNP状态更新。
+# -- Whether to enable CNP status updates.
 # cilium_disable_cnp_status_updates: true
 
-# 一个额外的规则变量列表，添加到cilium operator的clusterrole，格式如下：
+# A list of extra rules variables to add to clusterrole for cilium operator, formatted like:
 #   cilium_clusterrole_rules_operator_extra_vars:
 #     - apiGroups:
 #       - '""'

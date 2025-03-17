@@ -1,73 +1,73 @@
-# 参见 roles/network_plugin/kube-router/defaults/main.yml
+# See roles/network_plugin/kube-router/defaults/main.yml
 
-# Kube-router 版本
-# 默认为 v2
+# Kube router version
+# Default to v2
 # kube_router_version: "v2.0.0"
-# 取消注释以使用 v1（已弃用）
+# Uncomment to use v1 (Deprecated)
 # kube_router_version: "v1.6.0"
 
-# 启用 Pod 网络 -- 通过 iBGP 通告和学习 Pod 的路由
+# Enables Pod Networking -- Advertises and learns the routes to Pods via iBGP
 # kube_router_run_router: true
 
-# 启用网络策略 -- 设置 iptables 为 Pod 提供入口防火墙
+# Enables Network Policy -- sets up iptables to provide ingress firewall for pods
 # kube_router_run_firewall: true
 
-# 启用服务代理 -- 为 Kubernetes 服务设置 IPVS
-# 参见 docs/kube-router.md 中的 "注意事项" 部分
+# Enables Service Proxy -- sets up IPVS for Kubernetes Services
+# see docs/kube-router.md "Caveats" section
 # kube_router_run_service_proxy: false
 
-# 将服务的 Cluster IP 添加到 RIB 中，以便通告给 BGP 对等体。
+# Add Cluster IP of the service to the RIB so that it gets advertises to the BGP peers.
 # kube_router_advertise_cluster_ip: false
 
-# 将服务的外部 IP 添加到 RIB 中，以便通告给 BGP 对等体。
+# Add External IP of service to the RIB so that it gets advertised to the BGP peers.
 # kube_router_advertise_external_ip: false
 
-# 将服务状态中的 LoadBalancer IP（由 LB 提供商设置）添加到 RIB 中，以便通告给 BGP 对等体。
+# Add LoadBalancer IP of service status as set by the LB provider to the RIB so that it gets advertised to the BGP peers.
 # kube_router_advertise_loadbalancer_ip: false
 
-# 启用 BGP 优雅重启
+# Enables BGP graceful restarts
 # kube_router_bgp_graceful_restart: true
 
-# 调整 kube-router daemonset 模板的清单，以支持 DSR 所需的更改
+# Adjust manifest of kube-router daemonset template with DSR needed changes
 # kube_router_enable_dsr: false
 
-# kube-router 的额外参数数组，参见
+# Array of arbitrary extra arguments to kube-router, see
 # https://github.com/cloudnativelabs/kube-router/blob/master/docs/user-guide.md
 # kube_router_extra_args: []
 
-# 集群的 ASN 编号，用于与外部 BGP 路由器通信
+# ASN number of the cluster, used when communicating with external BGP routers
 # kube_router_cluster_asn: ~
 
-# 集群节点将向其通告集群 IP 和节点 Pod CIDR 的 BGP 对等体的 ASN 编号。
+# ASN numbers of the BGP peer to which cluster nodes will advertise cluster ip and node's pod cidr.
 # kube_router_peer_router_asns: ~
 
-# 所有节点将与其对等并通告集群 IP 和 Pod CIDR 的外部路由器的 IP 地址。
+# The ip address of the external router to which all nodes will peer and advertise the cluster ip and pod cidr's.
 # kube_router_peer_router_ips: ~
 
-# 所有节点将与其对等的外部 BGP 的远程端口。如果未设置，则使用默认的 BGP 端口（179）。
+# The remote port of the external BGP to which all nodes will peer. If not set, default BGP port (179) will be used.
 # kube_router_peer_router_ports: ~
 
-# 设置节点 CNI 以支持 hairpin 模式，需要节点重启，参见
+# Setups node CNI to allow hairpin mode, requires node reboots, see
 # https://github.com/cloudnativelabs/kube-router/blob/master/docs/user-guide.md#hairpin-mode
 # kube_router_support_hairpin_mode: false
 
-# 选择 DNS 策略 ClusterFirstWithHostNet、ClusterFirst 等。
+# Select DNS Policy ClusterFirstWithHostNet, ClusterFirst, etc.
 # kube_router_dns_policy: ClusterFirstWithHostNet
 
-# 主节点的注解数组
+# Array of annotations for master
 # kube_router_annotations_master: []
 
-# 每个节点的注解数组
+# Array of annotations for every node
 # kube_router_annotations_node: []
 
-# 每个节点的通用注解数组
+# Array of common annotations for every node
 # kube_router_annotations_all: []
 
-# 启用使用 Prometheus 抓取 kube-router 指标
+# Enables scraping kube-router metrics with Prometheus
 # kube_router_enable_metrics: false
 
-# 提供 Prometheus 指标的路径
+# Path to serve Prometheus metrics on
 # kube_router_metrics_path: /metrics
 
-# 使用的 Prometheus 指标端口
+# Prometheus metrics port to use
 # kube_router_metrics_port: 9255

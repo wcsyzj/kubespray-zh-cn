@@ -1,129 +1,132 @@
 ---
-# 参见 roles/network_plugin/calico/defaults/main.yml
+# see roles/network_plugin/calico/defaults/main.yml
 
-# name 的默认值
+# the default value of name
 calico_cni_name: k8s-pod-network
 
-## 使用 Calico 可以通过数据中心的边界路由器分发路由。
-## 警告：启用路由器对等将禁用 Calico 的默认行为（'节点网格'）。
-## 每个节点的子网将由数据中心路由器分发
+## With calico it is possible to distributed routes with border routers of the datacenter.
+## Warning : enabling router peering will disable calico's default behavior ('node mesh').
+## The subnets of each nodes will be distributed by the datacenter router
 # peer_with_router: false
 
-# 启用容器的互联网连接
+# Enables Internet connectivity from containers
 # nat_outgoing: true
 # nat_outgoing_ipv6: false
 
-# 启用 Calico CNI "host-local" IPAM 插件
+# Enables Calico CNI "host-local" IPAM plugin
 # calico_ipam_host_local: true
 
-# 添加默认的 ippool 名称
+# add default ippool name
 # calico_pool_name: "default-pool"
 
-# 添加默认的 ippool 块大小
+# add default ippool blockSize
 calico_pool_blocksize: 26
 
-# 添加默认的 ippool CIDR（必须在 kube_pods_subnet 内，否则默认为 kube_pods_subnet）
+# add default ippool CIDR (must be inside kube_pods_subnet, defaults to kube_pods_subnet otherwise)
 # calico_pool_cidr: 1.2.3.4/5
 
-# 将默认的 ippool CIDR 添加到 CNI 配置
+# add default ippool CIDR to CNI config
 # calico_cni_pool: true
 
-# 添加默认的 IPv6 IPPool CIDR。必须在 kube_pods_subnet_ipv6 内。如果未设置，则默认为 kube_pods_subnet_ipv6。
+# Add default IPV6 IPPool CIDR. Must be inside kube_pods_subnet_ipv6. Defaults to kube_pods_subnet_ipv6 if not set.
 # calico_pool_cidr_ipv6: fd85:ee78:d8a6:8607::1:0000/112
 
-# 将默认的 IPv6 IPPool CIDR 添加到 CNI 配置
+# Add default IPV6 IPPool CIDR to CNI config
 # calico_cni_pool_ipv6: true
 
-# 全局 AS 编号 (/calico/bgp/v1/global/as_num)
+# Global as_num (/calico/bgp/v1/global/as_num)
 # global_as_num: "64512"
 
-# 如果与节点分配的 ASN 进行对等，且全局 ASN 与节点不匹配，则需要将其设置为 true。其他所有情况为 false。
+# If doing peering with node-assigned asn where the globas does not match your nodes, you want this
+# to be true.  All other cases, false.
 # calico_no_global_as_num: false
 
-# 可以在此设置 MTU 值。如果未定义或为空，则不会在 Calico CNI 配置中指定，Calico 将使用内置默认值。该值应为数字，而不是字符串。
+# You can set MTU value here. If left undefined or empty, it will
+# not be specified in calico CNI config, so Calico will use built-in
+# defaults. The value should be a number, not a string.
 # calico_mtu: 1500
 
-# 配置工作负载接口和隧道的 MTU。
-# - 如果启用了 Wireguard，从网络 MTU 中减去 60（即 1500-60=1440）
-# - 否则，如果启用了 VXLAN 或 BPF 模式，从网络 MTU 中减去 50（即 1500-50=1450）
-# - 否则，如果启用了 IPIP，从网络 MTU 中减去 20（即 1500-20=1480）
-# - 否则，如果不使用任何封装，设置为网络 MTU（即 1500）
+# Configure the MTU to use for workload interfaces and tunnels.
+# - If Wireguard is enabled, subtract 60 from your network MTU (i.e 1500-60=1440)
+# - Otherwise, if VXLAN or BPF mode is enabled, subtract 50 from your network MTU (i.e. 1500-50=1450)
+# - Otherwise, if IPIP is enabled, subtract 20 from your network MTU (i.e. 1500-20=1480)
+# - Otherwise, if not using any encapsulation, set to your network MTU (i.e. 1500)
 # calico_veth_mtu: 1440
 
-# 通告集群 IP
+# Advertise Cluster IPs
 # calico_advertise_cluster_ips: true
 
-# 通告服务外部 IP
+# Advertise Service External IPs
 # calico_advertise_service_external_ips:
 # - x.x.x.x/24
 # - y.y.y.y/32
 
-# 通告服务负载均衡器 IP
+# Advertise Service LoadBalancer IPs
 # calico_advertise_service_loadbalancer_ips:
 # - x.x.x.x/24
 # - y.y.y.y/16
 
-# 选择 Calico 的数据存储类型："etcd" 或 "kdd"（kubernetes 数据存储）
+# Choose data store type for calico: "etcd" or "kdd" (kubernetes datastore)
 # calico_datastore: "kdd"
 
-# 选择 Calico iptables 后端："Legacy", "Auto" 或 "NFT"
+# Choose Calico iptables backend: "Legacy", "Auto" or "NFT"
 # calico_iptables_backend: "Auto"
 
-# 使用 typha（仅与 kdd 一起使用）
+# Use typha (only with kdd)
 # typha_enabled: false
 
-# 为安全的 typha<->calico-node 通信生成 TLS 证书
+# Generate TLS certs for secure typha<->calico-node communication
 # typha_secure: false
 
-# 扩展 typha：每 100 个节点 1 个副本是足够的
-# typha 副本数量
+# Scaling typha: 1 replica per 100 nodes is adequate
+# Number of typha replicas
 # typha_replicas: 1
 
-# 设置 typha 最大连接数
+# Set max typha connections
 # typha_max_connections_lower_limit: 300
 
-# 设置 Calico 网络后端："bird", "vxlan" 或 "none"
-# bird 启用 BGP 路由，是 ipip 和无封装模式所必需的
+# Set calico network backend: "bird", "vxlan" or "none"
+# bird enable BGP routing, required for ipip and no encapsulation modes
 # calico_network_backend: vxlan
 
-# IP in IP 和 VXLAN 是互斥的模式。
-# 设置 IP in IP 封装模式："Always", "CrossSubnet", "Never"
+# IP in IP and VXLAN is mutually exclusive modes.
+# set IP in IP encapsulation mode: "Always", "CrossSubnet", "Never"
 # calico_ipip_mode: 'Never'
 
-# 设置 VXLAN 封装模式："Always", "CrossSubnet", "Never"
+# set VXLAN encapsulation mode: "Always", "CrossSubnet", "Never"
 # calico_vxlan_mode: 'Always'
 
-# 设置 VXLAN 端口和 VNI
+# set VXLAN port and VNI
 # calico_vxlan_vni: 4096
 # calico_vxlan_port: 4789
 
-# 启用 eBPF 模式
+# Enable eBPF mode
 # calico_bpf_enabled: false
 
-# 如果要使用非默认的 IP_AUTODETECTION_METHOD, IP6_AUTODETECTION_METHOD 用于 Calico 节点，将此选项设置为以下之一：
-# * can-reach=目的地
-# * interface=接口正则表达式
-# 参见 https://docs.projectcalico.org/reference/node/configuration
+# If you want to use non default IP_AUTODETECTION_METHOD, IP6_AUTODETECTION_METHOD for calico node set this option to one of:
+# * can-reach=DESTINATION
+# * interface=INTERFACE-REGEX
+# see https://docs.projectcalico.org/reference/node/configuration
 # calico_ip_auto_method: "interface=eth.*"
 # calico_ip6_auto_method: "interface=eth.*"
 
-# 设置 FELIX_MTUIFACEPATTERN，用于发现主机的接口以进行 MTU 自动检测的模式。
-# 参见 https://projectcalico.docs.tigera.io/reference/felix/configuration
+# Set FELIX_MTUIFACEPATTERN, Pattern used to discover the host’s interface for MTU auto-detection.
+# see https://projectcalico.docs.tigera.io/reference/felix/configuration
 # calico_felix_mtu_iface_pattern: "^((en|wl|ww|sl|ib)[opsx].*|(eth|wlan|wwan).*)"
 
-# 选择 Calico 的 iptables 插入模式："Insert" 或 "Append"。
+# Choose the iptables insert mode for Calico: "Insert" or "Append".
 # calico_felix_chaininsertmode: Insert
 
-# 如果使用多个接口和动态路由（iproute2）时，想要使用默认路由接口
-# 参见 https://docs.projectcalico.org/reference/node/configuration : FELIX_DEVICEROUTESOURCEADDRESS
+# If you want use the default route interface when you use multiple interface with dynamique route (iproute2)
+# see https://docs.projectcalico.org/reference/node/configuration : FELIX_DEVICEROUTESOURCEADDRESS
 # calico_use_default_route_src_ipaddr: false
 
-# 使用 wireguard 启用 Calico 流量加密
+# Enable calico traffic encryption with wireguard
 # calico_wireguard_enabled: false
 
-# 在某些情况下，可能需要调整存活和就绪探针
+# Under certain situations liveness and readiness probes may need tunning
 # calico_node_livenessprobe_timeout: 10
 # calico_node_readinessprobe_timeout: 10
 
-# Calico apiserver（仅与 kdd 一起使用）
+# Calico apiserver (only with kdd)
 # calico_apiserver_enabled: false

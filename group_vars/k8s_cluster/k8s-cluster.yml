@@ -1,133 +1,137 @@
-# Kubernetes配置目录和系统命名空间。
-# 这些是存放所有额外配置的地方，
-# Kubernetes通常将它们放在/srv/kubernetes。
-# 这会将它们放在一个合理的位置和命名空间中。
-# 编辑这些值几乎肯定会破坏某些功能。
+---
+# Kubernetes configuration dirs and system namespace.
+# Those are where all the additional config stuff goes
+# the kubernetes normally puts in /srv/kubernetes.
+# This puts them in a sane location and namespace.
+# Editing those values will almost surely break something.
 kube_config_dir: /etc/kubernetes
 kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 
-# 这是所有证书脚本和证书存放的位置
+# This is where all the cert scripts and certs will be located
 kube_cert_dir: "{{ kube_config_dir }}/ssl"
 
-# 这是所有bearer tokens存放的位置
+# This is where all of the bearer tokens will be stored
 kube_token_dir: "{{ kube_config_dir }}/tokens"
 
 kube_api_anonymous_auth: true
 
-## 修改此项以使用其他Kubernetes版本，例如当前的beta版本
+## Change this to use another Kubernetes version, e.g. a current beta release
 kube_version: v1.31.7
 
-# 二进制文件的下载位置。
-# 注意：请确保磁盘空间足够（约1G）
+# Where the binaries will be downloaded.
+# Note: ensure that you've enough disk space (about 1G)
 local_release_dir: "/tmp/releases"
-# 重试失败操作（如推送/下载）的随机偏移量
+# Random shifts for retrying failed ops like pushing/downloading
 retry_stagger: 5
 
-# 这是拥有集群安装的用户。
+# This is the user that owns tha cluster installation.
 kube_owner: kube
 
-# 这是证书创建脚本更改组的组别
-# 证书文件将被更改为此组。这个值基本上不可更改...
+# This is the group that the cert creation scripts chgrp the
+# cert files to. Not really changeable...
 kube_cert_group: kube-cert
 
-# 集群日志级别配置
+# Cluster Loglevel configuration
 kube_log_level: 2
 
-# 存储凭证的目录
+# Directory where credentials will be stored
 credentials_dir: "{{ inventory_dir }}/credentials"
 
-## 可以激活/停用选定的身份验证方法（oidc，静态令牌认证）
+## It is possible to activate / deactivate selected authentication methods (oidc, static token auth)
 # kube_oidc_auth: false
 # kube_token_auth: false
 
 
-## OpenID Connect 配置变量 https://kubernetes.io/docs/admin/authentication/
-## 要使用 OpenID，您需要部署额外的 OpenID 提供程序（例如 Dex, Keycloak, ...）
+## Variables for OpenID Connect Configuration https://kubernetes.io/docs/admin/authentication/
+## To use OpenID you have to deploy additional an OpenID Provider (e.g Dex, Keycloak, ...)
 
 # kube_oidc_url: https:// ...
 # kube_oidc_client_id: kubernetes
-## OIDC 的可选设置
+## Optional settings for OIDC
 # kube_oidc_ca_file: "{{ kube_cert_dir }}/ca.pem"
 # kube_oidc_username_claim: sub
 # kube_oidc_username_prefix: 'oidc:'
 # kube_oidc_groups_claim: groups
 # kube_oidc_groups_prefix: 'oidc:'
 
-## 控制 webhook 认证/授权的变量
+## Variables to control webhook authn/authz
 # kube_webhook_token_auth: false
 # kube_webhook_token_auth_url: https://...
 # kube_webhook_token_auth_url_skip_tls_verify: false
 
-## 对于 webhook 授权，authorization_modes 必须包含 Webhook
+## For webhook authorization, authorization_modes must include Webhook
 # kube_webhook_authorization: false
 # kube_webhook_authorization_url: https://...
 # kube_webhook_authorization_url_skip_tls_verify: false
 
-# 选择网络插件（cilium, calico, kube-ovn, weave 或 flannel。使用 cni 表示通用的 cni 插件）
-# 也可以设置为 'cloud'，让云提供商设置适当的路由
+# Choose network plugin (cilium, calico, kube-ovn, weave or flannel. Use cni for generic cni plugin)
+# Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
 kube_network_plugin: calico
 
-# 将 multi_networking 设置为 true 将安装 Multus：https://github.com/k8snetworkplumbingwg/multus-cni
+# Setting multi_networking to true will install Multus: https://github.com/k8snetworkplumbingwg/multus-cni
 kube_network_plugin_multus: false
 
-# Kubernetes 服务的内部网络，未使用的地址块。
+# Kubernetes internal network for services, unused block of space.
 kube_service_addresses: 10.233.0.0/18
 
-# 内部网络。使用时，它将从此范围分配 IP 地址给各个 pod。
-# 此网络必须在您的网络基础设施中未使用！
+# internal network. When used, it will assign IP
+# addresses from this range to individual pods.
+# This network must be unused in your network infrastructure!
 kube_pods_subnet: 10.233.64.0/18
 
-# 内部网络节点大小分配（可选）。这是为每个节点分配的 pod IP 地址分配的大小。请注意，每个节点的 pod 数量也受 kubelet_max_pods 变量的限制，默认值为 110。
+# internal network node size allocation (optional). This is the size allocated
+# to each node for pod IP address allocation. Note that the number of pods per node is
+# also limited by the kubelet_max_pods variable which defaults to 110.
 #
-# 示例：
-# 最多 64 个节点，每个节点最多 254 或 kubelet_max_pods（两者中较小的一个）个 pod：
+# Example:
+# Up to 64 nodes and up to 254 or kubelet_max_pods (the lowest of the two) pods per node:
 #  - kube_pods_subnet: 10.233.64.0/18
 #  - kube_network_node_prefix: 24
 #  - kubelet_max_pods: 110
 #
-# 示例：
-# 最多 128 个节点，每个节点最多 126 或 kubelet_max_pods（两者中较小的一个）个 pod：
+# Example:
+# Up to 128 nodes and up to 126 or kubelet_max_pods (the lowest of the two) pods per node:
 #  - kube_pods_subnet: 10.233.64.0/18
 #  - kube_network_node_prefix: 25
 #  - kubelet_max_pods: 110
 kube_network_node_prefix: 24
 
-# 配置双栈网络（即同时支持 IPv4 和 IPv6）
+# Configure Dual Stack networking (i.e. both IPv4 and IPv6)
 enable_dual_stack_networks: false
 
-# Kubernetes IPv6 服务的内部网络，未使用的地址块。
-# 仅在 enable_dual_stack_networks 设置为 true 时使用
-# 提供 4096 个 IPv6 IP
+# Kubernetes internal network for IPv6 services, unused block of space.
+# This is only used if enable_dual_stack_networks is set to true
+# This provides 4096 IPv6 IPs
 kube_service_addresses_ipv6: fd85:ee78:d8a6:8607::1000/116
 
-# 内部网络。使用时，它将从此范围分配 IPv6 地址给各个 pod。
-# 此网络不得已在您的网络基础设施中使用！
-# 仅在 enable_dual_stack_networks 设置为 true 时使用。
-# 为 256 个节点提供空间，每个节点 254 个 pod。
+# Internal network. When used, it will assign IPv6 addresses from this range to individual pods.
+# This network must not already be in your network infrastructure!
+# This is only used if enable_dual_stack_networks is set to true.
+# This provides room for 256 nodes with 254 pods per node.
 kube_pods_subnet_ipv6: fd85:ee78:d8a6:8607::1:0000/112
 
-# 为每个节点分配的 IPv6 子网大小。
-# 仅在 enable_dual_stack_networks 设置为 true 时使用
-# 为每个节点提供 254 个 pod 的空间。
+# IPv6 subnet size allocated to each for pods.
+# This is only used if enable_dual_stack_networks is set to true
+# This provides room for 254 pods per node.
 kube_network_node_prefix_ipv6: 120
 
-# API Server 监听的端口。
+# The port the API Server will be listening on.
 kube_apiserver_ip: "{{ kube_service_addresses | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(1) | ansible.utils.ipaddr('address') }}"
 kube_apiserver_port: 6443  # (https)
 
-# Kube-proxy 代理模式配置。
-# 可以是 ipvs, iptables
+# Kube-proxy proxyMode configuration.
+# Can be ipvs, iptables
 kube_proxy_mode: ipvs
 
-# 配置 arp_ignore 和 arp_announce 以避免从 kube-ipvs0 接口响应 ARP 查询
-# 必须设置为 true 才能使 MetalLB, kube-vip(ARP 启用) 正常工作
+# configure arp_ignore and arp_announce to avoid answering ARP queries from kube-ipvs0 interface
+# must be set to true for MetalLB, kube-vip(ARP enabled) to work
 kube_proxy_strict_arp: false
 
-# 指定用于 NodePorts 的地址的字符串切片。
-# 值可以是有效的 IP 块（例如 1.2.3.0/24, 1.2.3.4/32）。
-# 默认的空字符串切片（[]）表示使用所有本地地址。
-# kube_proxy_nodeport_addresses_cidr 保留用于旧配置
+# A string slice of values which specify the addresses to use for NodePorts.
+# Values may be valid IP blocks (e.g. 1.2.3.0/24, 1.2.3.4/32).
+# The default empty string slice ([]) means to use all local addresses.
+# kube_proxy_nodeport_addresses_cidr is retained for legacy config
 kube_proxy_nodeport_addresses: >-
   {%- if kube_proxy_nodeport_addresses_cidr is defined -%}
   [{{ kube_proxy_nodeport_addresses_cidr }}]
@@ -135,36 +139,36 @@ kube_proxy_nodeport_addresses: >-
   []
   {%- endif -%}
 
-# 如果非空，将使用此字符串作为标识而不是实际的主机名
+# If non-empty, will use this string as identification instead of the actual hostname
 # kube_override_hostname: {{ inventory_hostname }}
 
-## 静态加密 Secret 数据
+## Encrypting Secret Data at Rest
 kube_encrypt_secret_data: false
 
-# 优雅节点关闭（Kubernetes >= 1.21.0），参见 https://kubernetes.io/blog/2021/04/21/graceful-node-shutdown-beta/
-# kubelet_shutdown_grace_period 必须大于 kubelet_shutdown_grace_period_critical_pods 以允许
-# 非关键 pod 也能优雅终止
+# Graceful Node Shutdown (Kubernetes >= 1.21.0), see https://kubernetes.io/blog/2021/04/21/graceful-node-shutdown-beta/
+# kubelet_shutdown_grace_period had to be greater than kubelet_shutdown_grace_period_critical_pods to allow
+# non-critical podsa to also terminate gracefully
 # kubelet_shutdown_grace_period: 60s
 # kubelet_shutdown_grace_period_critical_pods: 20s
 
-# DNS 配置。
-# Kubernetes 集群名称，也将用作 DNS 域
+# DNS configuration.
+# Kubernetes cluster name, also will be used as DNS domain
 cluster_name: cluster.local
-# 通过 /etc/resolv.conf 解析的 DNS 域的子域，用于 hostnet pod
+# Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
 ndots: 2
 # dns_timeout: 2
 # dns_attempts: 2
-# 要添加到默认集群搜索域的自定义搜索域
+# Custom search domains to be added in addition to the default cluster search domains
 # searchdomains:
 #   - svc.{{ cluster_name }}
 #   - default.svc.{{ cluster_name }}
-# 移除默认的集群搜索域（``default.svc.{{ dns_domain }}, svc.{{ dns_domain }}``）。
+# Remove default cluster search domains (``default.svc.{{ dns_domain }}, svc.{{ dns_domain }}``).
 # remove_default_searchdomains: false
-# 可以是 coredns, coredns_dual, manual 或 none
+# Can be coredns, coredns_dual, manual or none
 dns_mode: coredns
-# 如果使用自定义集群 DNS 服务器，请设置手动服务器
+# Set manual server if using a custom cluster DNS server
 # manual_dns_server: 10.x.x.x
-# 启用 nodelocal dns 缓存
+# Enable nodelocal dns cache
 enable_nodelocaldns: true
 enable_nodelocaldns_secondary: false
 nodelocaldns_ip: 169.254.25.10
@@ -192,48 +196,182 @@ nodelocaldns_secondary_skew_seconds: 5
 #   cache: 5
 #   rewrite:
 #   - name website.tld website.namespace.svc.cluster.local
-# 为 CoreDNS 启用 k8s_external 插件
+# Enable k8s_external plugin for CoreDNS
 enable_coredns_k8s_external: false
 coredns_k8s_external_zone: k8s_external.local
-# 为 kubernetes 插件启用 endpoint_pod_names 选项
+# Enable endpoint_pod_names option for kubernetes plugin
 enable_coredns_k8s_endpoint_pod_names: false
-# 为 coredns（和 nodelocaldns）配置中的上游 DNS 服务器设置转发选项
+# Set forward options for upstream DNS servers in coredns (and nodelocaldns) config
 # dns_upstream_forward_extra_opts:
 #   policy: sequential
-# 为 coredns kubernetes 插件应用额外选项
+# Apply extra options to coredns kubernetes plugin
 # coredns_kubernetes_extra_opts:
 #   - 'fallthrough example.local'
-# 为 coredns kubernetes 插件转发额外域
+# Forward extra domains to the coredns kubernetes plugin
 # coredns_kubernetes_extra_domains: ''
 
-# 可以是 docker_dns, host_resolvconf 或 none
+# Can be docker_dns, host_resolvconf or none
 resolvconf_mode: host_resolvconf
-# 部署 netchecker 应用程序以通过 HTTP 服务验证 DNS 解析
+# Deploy netchecker app to verify DNS resolve as an HTTP service
 deploy_netchecker: false
-# Kubernetes skydns 服务的 IP 地址
+# Ip address of the kubernetes skydns service
 skydns_server: "{{ kube_service_addresses | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(3) | ansible.utils.ipaddr('address') }}"
 skydns_server_secondary: "{{ kube_service_addresses | ansible.utils.ipaddr('net') | ansible.utils.ipaddr(4) | ansible.utils.ipaddr('address') }}"
 dns_domain: "{{ cluster_name }}"
 
-## 容器运行时
-## docker 表示 docker，crio 表示 cri-o，containerd 表示 containerd。
-## 默认：containerd
+## Container runtime
+## docker for docker, crio for cri-o and containerd for containerd.
+## Default: containerd
 container_manager: containerd
 
-# 额外的容器运行时
+# Additional container runtimes
 kata_containers_enabled: false
 
 kubeadm_certificate_key: "{{ lookup('password', credentials_dir + '/kubeadm_certificate_key.creds length=64 chars=hexdigits') | lower }}"
 
-# K8s 镜像拉取策略（imagePullPolicy）
+# K8s image pull policy (imagePullPolicy)
 k8s_image_pull_policy: IfNotPresent
 
-# Kubernetes 审计日志
+# audit log for kubernetes
 kubernetes_audit: false
 
-# 为动态 kubelet 定义 kubelet 配置目录
+# define kubelet config dir for dynamic kubelet
 # kubelet_config_dir:
 default_kubelet_config_dir: "{{ kube_config_dir }}/dynamic_kubelet_dir"
 
-# 在运行 Ansible 的主机上创建 kubeconfig 的副本，存放在 {{ inventory_dir }}/artifacts
+# Make a copy of kubeconfig on the host that runs Ansible in {{ inventory_dir }}/artifacts
 # kubeconfig_localhost: false
+# Use ansible_host as external api ip when copying over kubeconfig.
+# kubeconfig_localhost_ansible_host: false
+# Download kubectl onto the host that runs Ansible in {{ bin_dir }}
+# kubectl_localhost: false
+
+# A comma separated list of levels of node allocatable enforcement to be enforced by kubelet.
+# Acceptable options are 'pods', 'system-reserved', 'kube-reserved' and ''. Default is "".
+# kubelet_enforce_node_allocatable: pods
+
+## Set runtime and kubelet cgroups when using systemd as cgroup driver (default)
+# kubelet_runtime_cgroups: "/{{ kube_service_cgroups }}/{{ container_manager }}.service"
+# kubelet_kubelet_cgroups: "/{{ kube_service_cgroups }}/kubelet.service"
+
+## Set runtime and kubelet cgroups when using cgroupfs as cgroup driver
+# kubelet_runtime_cgroups_cgroupfs: "/system.slice/{{ container_manager }}.service"
+# kubelet_kubelet_cgroups_cgroupfs: "/system.slice/kubelet.service"
+
+# Whether to run kubelet and container-engine daemons in a dedicated cgroup.
+# kube_reserved: false
+## Uncomment to override default values
+## The following two items need to be set when kube_reserved is true
+# kube_reserved_cgroups_for_service_slice: kube.slice
+# kube_reserved_cgroups: "/{{ kube_reserved_cgroups_for_service_slice }}"
+# kube_memory_reserved: 256Mi
+# kube_cpu_reserved: 100m
+# kube_ephemeral_storage_reserved: 2Gi
+# kube_pid_reserved: "1000"
+
+## Optionally reserve resources for OS system daemons.
+# system_reserved: true
+## Uncomment to override default values
+## The following two items need to be set when system_reserved is true
+# system_reserved_cgroups_for_service_slice: system.slice
+# system_reserved_cgroups: "/{{ system_reserved_cgroups_for_service_slice }}"
+# system_memory_reserved: 512Mi
+# system_cpu_reserved: 500m
+# system_ephemeral_storage_reserved: 2Gi
+
+## Eviction Thresholds to avoid system OOMs
+# https://kubernetes.io/docs/tasks/administer-cluster/reserve-compute-resources/#eviction-thresholds
+# eviction_hard: {}
+# eviction_hard_control_plane: {}
+
+# An alternative flexvolume plugin directory
+# kubelet_flexvolumes_plugins_dir: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+
+## Supplementary addresses that can be added in kubernetes ssl keys.
+## That can be useful for example to setup a keepalived virtual IP
+# supplementary_addresses_in_ssl_keys: [10.0.0.1, 10.0.0.2, 10.0.0.3]
+
+## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
+## See https://github.com/kubernetes-sigs/kubespray/issues/2141
+## Set this variable to true to get rid of this issue
+volume_cross_zone_attachment: false
+## Add Persistent Volumes Storage Class for corresponding cloud provider (supported: in-tree OpenStack, Cinder CSI,
+## AWS EBS CSI, Azure Disk CSI, GCP Persistent Disk CSI)
+persistent_volumes_enabled: false
+
+## Container Engine Acceleration
+## Enable container acceleration feature, for example use gpu acceleration in containers
+# nvidia_accelerator_enabled: true
+## Nvidia GPU driver install. Install will by done by a (init) pod running as a daemonset.
+## Important: if you use Ubuntu then you should set in all.yml 'docker_storage_options: -s overlay2'
+## Array with nvida_gpu_nodes, leave empty or comment if you don't want to install drivers.
+## Labels and taints won't be set to nodes if they are not in the array.
+# nvidia_gpu_nodes:
+#   - kube-gpu-001
+# nvidia_driver_version: "384.111"
+## flavor can be tesla or gtx
+# nvidia_gpu_flavor: gtx
+## NVIDIA driver installer images. Change them if you have trouble accessing gcr.io.
+# nvidia_driver_install_centos_container: atzedevries/nvidia-centos-driver-installer:2
+# nvidia_driver_install_ubuntu_container: gcr.io/google-containers/ubuntu-nvidia-driver-installer@sha256:7df76a0f0a17294e86f691c81de6bbb7c04a1b4b3d4ea4e7e2cccdc42e1f6d63
+## NVIDIA GPU device plugin image.
+# nvidia_gpu_device_plugin_container: "registry.k8s.io/nvidia-gpu-device-plugin@sha256:0842734032018be107fa2490c98156992911e3e1f2a21e059ff0105b07dd8e9e"
+
+## Support tls min version, Possible values: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.
+# tls_min_version: ""
+
+## Support tls cipher suites.
+# tls_cipher_suites: {}
+#   - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+#   - TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256
+#   - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+#   - TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+#   - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+#   - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+#   - TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+#   - TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+#   - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+#   - TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+#   - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+#   - TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+#   - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+#   - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+#   - TLS_ECDHE_RSA_WITH_RC4_128_SHA
+#   - TLS_RSA_WITH_3DES_EDE_CBC_SHA
+#   - TLS_RSA_WITH_AES_128_CBC_SHA
+#   - TLS_RSA_WITH_AES_128_CBC_SHA256
+#   - TLS_RSA_WITH_AES_128_GCM_SHA256
+#   - TLS_RSA_WITH_AES_256_CBC_SHA
+#   - TLS_RSA_WITH_AES_256_GCM_SHA384
+#   - TLS_RSA_WITH_RC4_128_SHA
+
+## Amount of time to retain events. (default 1h0m0s)
+event_ttl_duration: "1h0m0s"
+
+## Automatically renew K8S control plane certificates on first Monday of each month
+auto_renew_certificates: false
+# First Monday of each month
+# auto_renew_certificates_systemd_calendar: "Mon *-*-1,2,3,4,5,6,7 03:{{ groups['kube_control_plane'].index(inventory_hostname) }}0:00"
+
+kubeadm_patches_dir: "{{ kube_config_dir }}/patches"
+kubeadm_patches: []
+# See https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/control-plane-flags/#patches
+# Correspondance with this link
+# patchtype = type
+# target = target
+# suffix -> managed automatically
+# extension -> always "yaml"
+# kubeadm_patches:
+# - target: kube-apiserver|kube-controller-manager|kube-scheduler|etcd|kubeletconfiguration
+#   type: strategic(default)|json|merge
+#   patch:
+#    metadata:
+#      annotations:
+#        example.com/test: "true"
+#      labels:
+#        example.com/prod_level: "{{ prod_level }}"
+# - ...
+# Patches are applied in the order they are specified.
+
+# Set to true to remove the role binding to anonymous users created by kubeadm
+remove_anonymous_access: false
