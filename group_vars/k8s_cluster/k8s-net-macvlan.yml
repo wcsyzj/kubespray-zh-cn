@@ -1,0 +1,6 @@
+---
+# 私有接口，位于 L2 网络
+macvlan_interface: "eth1"
+
+# 在默认网关网络接口中启用 NAT
+enable_nat_default_gateway: true

@@ -1,0 +1,9 @@
+## 要使用AWS EBS CSI Driver来配置卷，请取消注释第一个值
+## 并配置以下参数
+# aws_ebs_csi_enabled: true
+# aws_ebs_csi_enable_volume_scheduling: true
+# aws_ebs_csi_enable_volume_snapshot: false
+# aws_ebs_csi_enable_volume_resizing: false
+# aws_ebs_csi_controller_replicas: 1
+# aws_ebs_csi_plugin_image_tag: latest
+# aws_ebs_csi_extra_volume_tags: "Owner=owner,Team=team,Environment=environment'

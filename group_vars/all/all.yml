@@ -1,0 +1,138 @@
+---
+## 二进制文件安装目录
+bin_dir: /usr/local/bin
+
+## access_ip变量用于定义其他节点应如何访问
+## 该节点。例如，在flannel中用于允许其他flannel节点看到
+## 该节点。access_ip在AWS和Google环境中非常有用，
+## 在这些环境中，节点通过"公共"ip远程访问，
+## 但节点本身并不知道该地址。
+# access_ip: 1.1.1.1
+
+
+## 外部负载均衡器示例配置
+## apiserver_loadbalancer_domain_name: "elb.some.domain"
+# loadbalancer_apiserver:
+#   address: 1.2.3.4
+#   port: 1234
+
+## apiserver的内部负载均衡器
+# loadbalancer_apiserver_localhost: true
+# 有效选项为"nginx"或"haproxy"
+# loadbalancer_apiserver_type: nginx  # 有效值 "nginx" 或 "haproxy"
+
+## 本地负载均衡器应使用此端口
+## 并且必须设置为6443端口
+loadbalancer_apiserver_port: 6443
+
+## 如果定义了loadbalancer_apiserver_healthcheck_port变量，则为nginx启用代理活性检查。
+loadbalancer_apiserver_healthcheck_port: 8081
+
+### 其他可选变量
+
+## 默认情况下，Kubespray会收集主机上的nameserver。然后它将之前收集的nameserver添加到nameserverentries中。
+## 如果为true，Kubespray在dns_late阶段不会将主机nameserver包含在nameserverentries中。但是，它会在dns_early阶段使用nameserver以确保集群安全安装。
+## 请谨慎使用此选项，您可能需要定义自己的dns服务器。否则，像www.google.com这样的出站查询可能会失败。
+# disable_host_nameservers: false
+
+## 上游dns服务器
+# upstream_dns_servers:
+#   - 8.8.8.8
+#   - 8.8.4.4
+
+## 云提供商有一些特定的变化
+## 例如，我们需要使用某些网络插件封装数据包
+## 如果设置，K8s v1.31之后唯一可能的值是'external'。
+# cloud_provider:
+
+# 外部云控制器管理器（以前称为云提供商）
+# cloud_provider必须为"external"，否则此设置无效。
+# 支持的外部云控制器有：'openstack', 'vsphere', 'oci', 'huaweicloud', 'hcloud' 和 'manual'
+# 'manual'不会安装Kubespray使用的云控制器管理器。
+# 如果您填写了上述值以外的值，检查将失败。
+# external_cloud_provider:
+
+## 设置这些代理值以更新包管理器和docker守护进程以使用代理，并在需要时为https_proxy使用自定义CA
+# http_proxy: ""
+# https_proxy: ""
+# https_proxy_cert_file: ""
+
+## 在修改no_proxy之前，请参考roles/kubespray-defaults/defaults/main/main.yml
+# no_proxy: ""
+
+## 由于ansible的bug，通过https代理下载文件时可能会出现一些问题
+## https://github.com/ansible/ansible/issues/32750。将此变量设置为False以禁用
+## get_url模块的SSL验证。请注意，kubespray仍将执行校验和验证。
+# download_validate_certs: False
+
+## 如果需要从代理和其他资源中排除所有集群节点，请在此处添加其他资源。
+# additional_no_proxy: ""
+
+## 如果您需要禁用操作系统包仓库的代理但仍处于http_proxy之后，请设置
+## skip_http_proxy_on_os_packages为true
+## 这将导致kubespray不会在centos的/etc/yum.conf和debian/ubuntu的/etc/apt/apt.conf中设置代理环境
+## 对于debian/ubuntu的特殊信息 - 您必须设置no_proxy变量，然后apt包将从您希望的源安装
+# skip_http_proxy_on_os_packages: false
+
+## 由于默认情况下worker节点包含在no_proxy变量中，当添加或删除worker节点时，所有节点上的docker引擎将重新启动（所有
+## pod将重新启动）。要覆盖此行为，仅将控制平面节点包含在no_proxy变量中，请将以下设置为true：
+no_proxy_exclude_workers: false
+
+## 证书管理
+## 此设置决定是否通过脚本生成证书。
+## 如果您提供自己的证书，请选择'none'。
+## 选项为 "script", "none"
+# cert_management: script
+
+## 设置为true以允许预检查失败并继续部署
+# ignore_assert_errors: false
+
+## Kubelet用于无身份验证/授权的只读端口。取消注释以启用。
+# kube_read_only_port: 10255
+
+## 设置为true以下载并缓存容器
+# download_container: true
+
+## 部署容器引擎
+# 如果要手动部署容器引擎，请设置为false。
+# deploy_container_engine: true
+
+## Red Hat Enterprise Linux订阅注册
+## 添加RHEL订阅用户名/密码或组织ID/激活密钥组合
+## 如有必要，请更新RHEL订阅用途、角色和SLA
+# rh_subscription_username: ""
+# rh_subscription_password: ""
+# rh_subscription_org_id: ""
+# rh_subscription_activation_key: ""
+# rh_subscription_usage: "Development"
+# rh_subscription_role: "Red Hat Enterprise Server"
+# rh_subscription_sla: "Self-Support"
+
+## 检查access_ip是否响应ping。如果您的防火墙阻止ICMP，请设置为false。
+# ping_access_ip: true
+
+# 添加sysctl配置的sysctl_file_path
+# sysctl_file_path: "/etc/sysctl.d/99-sysctl.conf"
+
+## webhook token认证的变量 https://kubernetes.io/docs/reference/access-authn-authz/authentication/#webhook-token-authentication
+kube_webhook_token_auth: false
+kube_webhook_token_auth_url_skip_tls_verify: false
+# kube_webhook_token_auth_url: https://...
+## webhook的CA证书的base64编码字符串
+# kube_webhook_token_auth_ca_data: "LS0t..."
+
+## NTP设置
+# 启动ntpd或chrony服务并在系统启动时启用它。
+ntp_enabled: false
+ntp_manage_config: false
+ntp_servers:
+  - "0.pool.ntp.org iburst"
+  - "1.pool.ntp.org iburst"
+  - "2.pool.ntp.org iburst"
+  - "3.pool.ntp.org iburst"
+
+## 用于控制no_log属性
+unsafe_show_logs: false
+
+## 如果启用，即使发行版不受支持，kubespray也会尝试进行设置。对于不受支持的发行版，这可能会导致某些情况下出现意外故障。
+allow_unsupported_distribution_setup: false

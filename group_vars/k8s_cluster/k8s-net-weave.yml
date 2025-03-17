@@ -1,0 +1,50 @@
+# 参见 roles/network_plugin/weave/defaults/main.yml
+
+# Weave 的网络加密密码，如果为空则不启用网络加密。
+# weave_password: ~
+
+# 如果设置为 1，则禁用检查新版本的 Weave Net（默认为空，即启用检查）
+# weave_checkpoint_disable: false
+
+# 对等体之间连接数的软限制。默认为 100。
+# weave_conn_limit: 100
+
+# Weave Net 默认在 veth 对的桥接端启用 hairpin 模式，用于连接的容器。如果需要禁用 hairpin 模式，例如你的内核在启用 hairpin 时可能会崩溃，则可以通过设置 `HAIRPIN_MODE=false` 来禁用它。
+# weave_hairpin_mode: true
+
+# Weave Net 使用的 IP 地址范围及其所在的子网（CIDR 格式；默认为 10.32.0.0/12）
+# weave_ipalloc_range: "{{ kube_pods_subnet }}"
+
+# 设置为 0 以禁用网络策略控制器（默认启用）
+# weave_expect_npc: "{{ enable_network_policy }}"
+
+# Kubernetes 集群中对等体的地址列表（默认从 api-server 获取）
+# weave_kube_peers: ~
+
+# 设置 IP 地址管理器的初始化模式（默认为 KUBE_PEERS 之间的共识）
+# weave_ipalloc_init: ~
+
+# 设置从 Weave 网络到主机网络的网关 IP 地址 - 这在将插件配置为静态 Pod 时非常有用。
+# weave_expose_ip: ~
+
+# Weave Net 守护进程提供 Prometheus 风格指标的地址和端口（默认为 0.0.0.0:6782）
+# weave_metrics_addr: ~
+
+# Weave Net 守护进程提供状态请求的地址和端口（默认为禁用）
+# weave_status_addr: ~
+
+# Weave Net 默认为 1376 字节，但如果你的底层网络有更严格的限制，可以设置更小的值，或者如果你的网络支持巨型帧（例如 8916），可以设置更大的值以获得更好的性能。
+# weave_mtu: 1376
+
+# 设置为 1 以在访问带有 `service.spec.externalTrafficPolicy=Local` 注解的服务时保留客户端源 IP 地址。此功能仅在 Weave IPAM（默认）下有效。
+# weave_no_masq_local: true
+
+# 设置为 nft 以使用 nftables 作为 iptables 的后端（默认为 iptables）
+# weave_iptables_backend: iptables
+
+# 传递给 launch.sh 的额外变量，用于启用种子模式，参见
+# https://www.weave.works/docs/net/latest/tasks/ipam/ipam/
+# weave_extra_args: ~
+
+# 传递给 launch.sh 的 weave_npc 的额外变量，用于更改日志级别，例如 --log-level=error
+# weave_npc_extra_args: ~

@@ -1,0 +1,16 @@
+---
+## etcd数据存储目录
+etcd_data_dir: /var/lib/etcd
+
+## 容器运行时
+## docker表示docker，crio表示cri-o，containerd表示containerd。
+## 此外，如果您想使用kubeadm安装etcd，可以将其设置为kubeadm
+## Kubeadm etcd部署是实验性的，仅适用于新部署
+## 如果未设置，容器管理器将从Kubespray默认值继承
+## 而不是从k8s_cluster/k8s-cluster.yml继承，这可能不是您想要的。
+## 这也使得可以为etcd节点使用不同的容器管理器。
+# container_manager: containerd
+
+## etcd部署类型设置
+# 如果使用container_manager: docker，请将其设置为docker
+etcd_deployment_type: host

@@ -1,0 +1,59 @@
+---
+# 更多配置选项请参见roles/container-engine/containerd/defaults/main.yml
+
+# containerd_storage_dir: "/var/lib/containerd"
+# containerd_state_dir: "/run/containerd"
+# containerd_oom_score: 0
+
+# containerd_default_runtime: "runc"
+# containerd_snapshotter: "native"
+
+# containerd_runc_runtime:
+#   name: runc
+#   type: "io.containerd.runc.v2"
+#   engine: ""
+#   root: ""
+
+# containerd_additional_runtimes:
+# Kata Containers作为附加运行时的示例：
+#   - name: kata
+#     type: "io.containerd.kata.v2"
+#     engine: ""
+#     root: ""
+
+# containerd_grpc_max_recv_message_size: 16777216
+# containerd_grpc_max_send_message_size: 16777216
+
+# Containerd调试套接字位置：unix或tcp格式
+# containerd_debug_address: ""
+
+# Containerd日志级别
+# containerd_debug_level: "info"
+
+# Containerd日志格式，支持的值：text, json
+# containerd_debug_format: ""
+
+# Containerd调试套接字UID
+# containerd_debug_uid: 0
+
+# Containerd调试套接字GID
+# containerd_debug_gid: 0
+
+# containerd_metrics_address: ""
+
+# containerd_metrics_grpc_histogram: false
+
+# 在containerd中定义的镜像仓库
+# containerd_registries_mirrors:
+#  - prefix: docker.io
+#    mirrors:
+#     - host: https://registry-1.docker.io
+#       capabilities: ["pull", "resolve"]
+#       skip_verify: false
+
+# containerd_max_container_log_line_size: 16384
+
+# containerd_registry_auth:
+#   - registry: 10.0.0.2:5000
+#     username: user
+#     password: pass

@@ -1,0 +1,38 @@
+---
+## Etcd mvcc键值存储的自动压缩保留时间（小时）
+# etcd_compaction_retention: 0
+
+## 设置etcd导出指标的详细程度，指定'extensive'以包含直方图指标。
+# etcd_metrics: basic
+
+## 对于内存小于4GB的系统，etcd默认限制为512M，512MB仅够测试使用。
+## 如果您的etcd节点内存小于4GB但希望为etd分配更多内存，请设置此值。设置为0表示无限制。
+## 此值仅在通过`etcd_deployment_type: docker`部署etcd时相关
+# etcd_memory_limit: "512M"
+
+## Etcd的默认空间配额为2G。如果您设置的etcd_memory_limit值小于
+## etcd_quota_backend_bytes，可能会遇到etcd集群因内存不足而终止的情况。请查阅
+## etcd文档以获取更多信息。
+# 对于正常环境，建议最大大小为8G，如果配置值超过此值，etcd会在启动时发出警告。
+# etcd_quota_backend_bytes: "2147483648"
+
+# 服务器将接受的最大客户端请求大小（字节）
+# etcd设计用于处理典型的元数据小键值对。
+# 较大的请求也可以工作，但可能会增加其他请求的延迟
+# etcd_max_request_bytes: "1572864"
+
+### ETCD：禁用对等客户端证书认证。
+# 这会影响ETCD_PEER_CLIENT_CERT_AUTH变量
+# etcd_peer_client_auth: true
+
+## 启用分布式追踪
+## 要启用此实验性功能，请设置etcd_experimental_enable_distributed_tracing: true，同时设置
+## etcd_experimental_distributed_tracing_sample_rate以选择每百万个span收集多少样本，
+## 默认采样率为0 https://etcd.io/docs/v3.5/op-guide/monitoring/#distributed-tracing
+# etcd_experimental_enable_distributed_tracing: false
+# etcd_experimental_distributed_tracing_sample_rate: 100
+# etcd_experimental_distributed_tracing_address: "localhost:4317"
+# etcd_experimental_distributed_tracing_service_name: etcd
+
+## etcd watch进度通知事件的间隔
+# etcd_experimental_watch_progress_notify_interval: 5s

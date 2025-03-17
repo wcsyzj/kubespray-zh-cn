@@ -1,0 +1,55 @@
+## 当使用外部Oracle云基础设施时，设置这些变量
+## 外部OCI云控制器管理器
+## https://github.com/oracle/oci-cloud-controller-manager/blob/v1.29.0/manifests/provider-config-example.yaml
+# external_oracle_auth_region: ""
+# external_oracle_auth_tenancy: ""
+# external_oracle_auth_user: ""
+# external_oracle_auth_key: ""
+# external_oracle_auth_passphrase: ""
+# external_oracle_auth_fingerprint: ""
+# external_oracle_auth_use_instance_principals: false
+
+# external_oracle_compartment: ""
+# external_oracle_vcn: ""
+# external_oracle_load_balancer_subnet1: ""
+# external_oracle_load_balancer_subnet2: ""
+# external_oracle_load_balancer_security_list_management_mode: All
+# external_oracle_load_balancer_security_lists: {}
+
+# external_oracle_ratelimiter_qps_read: 20.0
+# external_oracle_ratelimiter_bucket_read: 5
+# external_oracle_ratelimiter_qps_write: 20.0
+# external_oracle_ratelimiter_bucket_write: 5
+
+# external_oracle_cloud_controller_image_repo: ghcr.io/oracle/cloud-provider-oci
+# external_oracle_cloud_controller_image_tag: "v1.29.0"
+
+
+## 当使用Oracle云基础设施时，设置这些变量
+# oci_private_key:
+# oci_region_id:
+# oci_tenancy_id:
+# oci_user_id:
+# oci_user_fingerprint:
+# oci_compartment_id:
+# oci_vnc_id:
+# oci_subnet1_id:
+# oci_subnet2_id:
+## 如果您希望覆盖这些默认/可选行为
+# oci_security_list_management: All
+## 如果您希望控制器管理每个子网的特定列表。这是子网ocid到安全列表ocid的映射。以下是示例。
+# oci_security_lists:
+#   ocid1.subnet.oc1.phx.aaaaaaaasa53hlkzk6nzksqfccegk2qnkxmphkblst3riclzs4rhwg7rg57q: ocid1.securitylist.oc1.iad.aaaaaaaaqti5jsfvyw6ejahh7r4okb2xbtuiuguswhs746mtahn72r7adt7q
+#   ocid1.subnet.oc1.phx.aaaaaaaahuxrgvs65iwdz7ekwgg3l5gyah7ww5klkwjcso74u3e4i64hvtvq: ocid1.securitylist.oc1.iad.aaaaaaaaqti5jsfvyw6ejahh7r4okb2xbtuiuguswhs746mtahn72r7adt7q
+## 如果oci_use_instance_principals为true，则不需要设置region、tenancy、user、key、passphrase或fingerprint
+# oci_use_instance_principals: false
+# oci_cloud_controller_version: 0.6.0
+## 如果您希望控制控制器的OCI查询速率限制
+# oci_rate_limit:
+#   rate_limit_qps_read:
+#   rate_limit_qps_write:
+#   rate_limit_bucket_read:
+#   rate_limit_bucket_write:
+## 其他可选变量
+# oci_cloud_controller_pull_source: (默认 iad.ocir.io/oracle/cloud-provider-oci)
+# oci_cloud_controller_pull_secret: (如果您定义了自己的镜像，则使用的pull secret名称)

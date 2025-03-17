@@ -1,0 +1,9 @@
+# 在cri-o中定义的镜像仓库
+# crio_insecure_registries:
+#   - 10.0.0.2:5000
+
+# 镜像仓库的认证配置
+# crio_registry_auth:
+#   - registry: 10.0.0.2:5000
+#     username: user
+#     password: pass
