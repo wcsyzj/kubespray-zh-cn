@@ -1,38 +1,38 @@
 ---
-## Etcd auto compaction retention for mvcc key value store in hour
+## Etcd mvcc键值存储的自动压缩保留时间（小时）
 # etcd_compaction_retention: 0
 
-## Set level of detail for etcd exported metrics, specify 'extensive' to include histogram metrics.
+## 设置etcd导出指标的详细程度，指定'extensive'以包含直方图指标。
 # etcd_metrics: basic
 
-## Etcd is restricted by default to 512M on systems under 4GB RAM, 512MB is not enough for much more than testing.
-## Set this if your etcd nodes have less than 4GB but you want more RAM for etcd. Set to 0 for unrestricted RAM.
-## This value is only relevant when deploying etcd with `etcd_deployment_type: docker`
+## 对于内存小于4GB的系统，etcd默认限制为512M，512MB仅够测试使用。
+## 如果您的etcd节点内存小于4GB但希望为etd分配更多内存，请设置此值。设置为0表示无限制。
+## 此值仅在通过`etcd_deployment_type: docker`部署etcd时相关
 # etcd_memory_limit: "512M"
 
-## Etcd has a default of 2G for its space quota. If you put a value in etcd_memory_limit which is less than
-## etcd_quota_backend_bytes, you may encounter out of memory terminations of the etcd cluster. Please check
-## etcd documentation for more information.
-# 8G is a suggested maximum size for normal environments and etcd warns at startup if the configured value exceeds it.
+## Etcd的默认空间配额为2G。如果您设置的etcd_memory_limit值小于
+## etcd_quota_backend_bytes，可能会遇到etcd集群因内存不足而终止的情况。请查阅
+## etcd文档以获取更多信息。
+# 对于正常环境，建议最大大小为8G，如果配置值超过此值，etcd会在启动时发出警告。
 # etcd_quota_backend_bytes: "2147483648"
 
-# Maximum client request size in bytes the server will accept.
-# etcd is designed to handle small key value pairs typical for metadata.
-# Larger requests will work, but may increase the latency of other requests
+# 服务器将接受的最大客户端请求大小（字节）
+# etcd设计用于处理典型的元数据小键值对。
+# 较大的请求也可以工作，但可能会增加其他请求的延迟
 # etcd_max_request_bytes: "1572864"
 
-### ETCD: disable peer client cert authentication.
-# This affects ETCD_PEER_CLIENT_CERT_AUTH variable
+### ETCD：禁用对等客户端证书认证。
+# 这会影响ETCD_PEER_CLIENT_CERT_AUTH变量
 # etcd_peer_client_auth: true
 
-## Enable distributed tracing
-## To enable this experimental feature, set the etcd_experimental_enable_distributed_tracing: true, along with the
-## etcd_experimental_distributed_tracing_sample_rate to choose how many samples to collect per million spans,
-## the default sampling rate is 0 https://etcd.io/docs/v3.5/op-guide/monitoring/#distributed-tracing
+## 启用分布式追踪
+## 要启用此实验性功能，请设置etcd_experimental_enable_distributed_tracing: true，同时设置
+## etcd_experimental_distributed_tracing_sample_rate以选择每百万个span收集多少样本，
+## 默认采样率为0 https://etcd.io/docs/v3.5/op-guide/monitoring/#distributed-tracing
 # etcd_experimental_enable_distributed_tracing: false
 # etcd_experimental_distributed_tracing_sample_rate: 100
 # etcd_experimental_distributed_tracing_address: "localhost:4317"
 # etcd_experimental_distributed_tracing_service_name: etcd
 
-## The interval for etcd watch progress notify events
+## etcd watch进度通知事件的间隔
 # etcd_experimental_watch_progress_notify_interval: 5s

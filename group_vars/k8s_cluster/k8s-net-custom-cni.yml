@@ -1,45 +1,44 @@
 ---
-# custom_cni network plugin configuration
-# There are two deployment options to choose from, select one
+# custom_cni 网络插件配置
+# 有两种部署选项可供选择，请选择其中一种
 
-## OPTION 1 - Static manifest files
-## With this option, referred manifest file will be deployed
-## as if the `kubectl apply -f` method was used with it.
+## 选项 1 - 静态清单文件
+## 使用此选项，将部署所引用的清单文件
+## 就像使用 `kubectl apply -f` 方法一样。
 #
-## List of Kubernetes resource manifest files
-## See tests/files/custom_cni/README.md for example
+## Kubernetes 资源清单文件列表
+## 请参阅 tests/files/custom_cni/README.md 中的示例
 # custom_cni_manifests: []
 
-## OPTION 1 EXAMPLE - Cilium static manifests in Kubespray tree
+## 选项 1 示例 - Kubespray 树中的 Cilium 静态清单
 # custom_cni_manifests:
 #   - "{{ playbook_dir }}/../tests/files/custom_cni/cilium.yaml"
 
-## OPTION 2 - Helm chart application
-## This allows the CNI backend to be deployed to Kubespray cluster
-## as common Helm application.
+## 选项 2 - Helm 图表应用
+## 这允许将 CNI 后端作为常见的 Helm 应用程序部署到 Kubespray 集群中。
 #
-## Helm release name - how the local instance of deployed chart will be named
+## Helm 发布名称 - 部署的图表的本地实例将如何命名
 # custom_cni_chart_release_name: ""
 #
-## Kubernetes namespace to deploy into
+## 要部署到的 Kubernetes 命名空间
 # custom_cni_chart_namespace: "kube-system"
 #
-## Helm repository name - how the local record of Helm repository will be named
+## Helm 仓库名称 - Helm 仓库的本地记录将如何命名
 # custom_cni_chart_repository_name: ""
 #
-## Helm repository URL
+## Helm 仓库 URL
 # custom_cni_chart_repository_url: ""
 #
-## Helm chart reference - path to the chart in the repository
+## Helm 图表引用 - 仓库中图表的路径
 # custom_cni_chart_ref: ""
 #
-## Helm chart version
+## Helm 图表版本
 # custom_cni_chart_version: ""
 #
-## Custom Helm values to be used for deployment
+## 用于部署的自定义 Helm 值
 # custom_cni_chart_values: {}
 
-## OPTION 2 EXAMPLE - Cilium deployed from official public Helm chart
+## 选项 2 示例 - 从官方公共 Helm 图表部署的 Cilium
 # custom_cni_chart_namespace: kube-system
 # custom_cni_chart_release_name: cilium
 # custom_cni_chart_repository_name: cilium

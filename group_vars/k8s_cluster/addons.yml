@@ -1,18 +1,18 @@
 ---
-# Kubernetes dashboard
-# RBAC required. see docs/getting-started.md for access details.
+# Kubernetes仪表板
+# 需要RBAC。有关访问详细信息，请参阅docs/getting-started.md。
 # dashboard_enabled: false
 
-# Helm deployment
+# Helm部署
 helm_enabled: false
 
-# Registry deployment
+# 注册表部署
 registry_enabled: false
 # registry_namespace: kube-system
 # registry_storage_class: ""
 # registry_disk_size: "10Gi"
 
-# Metrics Server deployment
+# Metrics Server部署
 metrics_server_enabled: false
 # metrics_server_container_port: 10250
 # metrics_server_kubelet_insecure_tls: true
@@ -21,7 +21,7 @@ metrics_server_enabled: false
 # metrics_server_host_network: false
 # metrics_server_replicas: 1
 
-# Rancher Local Path Provisioner
+# Rancher本地路径供应器
 local_path_provisioner_enabled: false
 # local_path_provisioner_namespace: "local-path-storage"
 # local_path_provisioner_storage_class: "local-path"
@@ -33,7 +33,7 @@ local_path_provisioner_enabled: false
 # local_path_provisioner_helper_image_repo: "busybox"
 # local_path_provisioner_helper_image_tag: "latest"
 
-# Local volume provisioner deployment
+# 本地卷供应器部署
 local_volume_provisioner_enabled: false
 # local_volume_provisioner_namespace: kube-system
 # local_volume_provisioner_nodelabels:
@@ -58,14 +58,14 @@ local_volume_provisioner_enabled: false
 #   - effect: NoSchedule
 #     operator: Exists
 
-# CSI Volume Snapshot Controller deployment, set this to true if your CSI is able to manage snapshots
-# currently, setting cinder_csi_enabled=true would automatically enable the snapshot controller
-# Longhorn is an external CSI that would also require setting this to true but it is not included in kubespray
+# CSI卷快照控制器部署，如果您的CSI能够管理快照，请将此设置为true
+# 目前，设置cinder_csi_enabled=true将自动启用快照控制器
+# Longhorn是一个外部CSI，也需要将此设置为true，但它不包含在kubespray中
 # csi_snapshot_controller_enabled: false
-# csi snapshot namespace
+# csi快照命名空间
 # snapshot_controller_namespace: kube-system
 
-# CephFS provisioner deployment
+# CephFS供应器部署
 cephfs_provisioner_enabled: false
 # cephfs_provisioner_namespace: "cephfs-provisioner"
 # cephfs_provisioner_cluster: ceph
@@ -77,7 +77,7 @@ cephfs_provisioner_enabled: false
 # cephfs_provisioner_claim_root: /volumes
 # cephfs_provisioner_deterministic_names: true
 
-# RBD provisioner deployment
+# RBD供应器部署
 rbd_provisioner_enabled: false
 # rbd_provisioner_namespace: rbd-provisioner
 # rbd_provisioner_replicas: 2

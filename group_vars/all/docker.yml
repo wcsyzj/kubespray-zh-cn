@@ -1,59 +1,58 @@
 ---
-## Uncomment this if you want to force overlay/overlay2 as docker storage driver
-## Please note that overlay2 is only supported on newer kernels
+## 如果要强制使用overlay/overlay2作为docker存储驱动，请取消注释
+## 请注意overlay2仅在较新的内核上受支持
 # docker_storage_options: -s overlay2
 
-## Enable docker_container_storage_setup, it will configure devicemapper driver on Centos7 or RedHat7.
+## 启用docker_container_storage_setup，它将在Centos7或RedHat7上配置devicemapper驱动。
 docker_container_storage_setup: false
 
-## It must be define a disk path for docker_container_storage_setup_devs.
-## Otherwise docker-storage-setup will be executed incorrectly.
+## 必须为docker_container_storage_setup_devs定义磁盘路径。
+## 否则docker-storage-setup将无法正确执行。
 # docker_container_storage_setup_devs: /dev/vdb
 
-## Uncomment this if you want to change the Docker Cgroup driver (native.cgroupdriver)
-## Valid options are systemd or cgroupfs, default is systemd
+## 如果要更改Docker Cgroup驱动（native.cgroupdriver），请取消注释
+## 有效选项为systemd或cgroupfs，默认为systemd
 # docker_cgroup_driver: systemd
 
-## Only set this if you have more than 3 nameservers:
-## If true Kubespray will only use the first 3, otherwise it will fail
+## 仅在您有超过3个nameserver时设置：
+## 如果为true，Kubespray将仅使用前3个，否则会失败
 docker_dns_servers_strict: false
 
-# Path used to store Docker data
+# 用于存储Docker数据的路径
 docker_daemon_graph: "/var/lib/docker"
 
-## Used to set docker daemon iptables options to true
+## 用于将docker守护进程的iptables选项设置为true
 docker_iptables_enabled: "false"
 
-# Docker log options
-# Rotate container stderr/stdout logs at 50m and keep last 5
+# Docker日志选项
+# 在50m时轮换容器的stderr/stdout日志并保留最后5个
 docker_log_opts: "--log-opt max-size=50m --log-opt max-file=5"
 
-# define docker bin_dir
+# 定义docker bin目录
 docker_bin_dir: "/usr/bin"
 
-# keep docker packages after installation; speeds up repeated ansible provisioning runs when '1'
-# kubespray deletes the docker package on each run, so caching the package makes sense
+# 安装后保留docker包；当为'1'时加速重复的ansible配置运行
+# kubespray每次运行都会删除docker包，因此缓存包是有意义的
 docker_rpm_keepcache: 1
 
-## An obvious use case is allowing insecure-registry access to self hosted registries.
-## Can be ipaddress and domain_name.
-## example define 172.19.16.11 or mirror.registry.io
+## 一个明显的用例是允许对自托管仓库进行不安全仓库访问。
+## 可以是ip地址和域名。
+## 例如定义172.19.16.11或mirror.registry.io
 # docker_insecure_registries:
 #   - mirror.registry.io
 #   - 172.19.16.11
 
-## Add other registry,example China registry mirror.
+## 添加其他仓库，例如中国仓库镜像。
 # docker_registry_mirrors:
 #   - https://registry.docker-cn.com
 #   - https://mirror.aliyuncs.com
 
-## If non-empty will override default system MountFlags value.
-## This option takes a mount propagation flag: shared, slave
-## or private, which control whether mounts in the file system
-## namespace set up for docker will receive or propagate mounts
-## and unmounts. Leave empty for system default
+## 如果非空将覆盖默认的MountFlags值。
+## 此选项接受挂载传播标志：shared, slave
+## 或private，控制为docker设置的文件系统命名空间中的挂载
+## 是否接收或传播挂载和卸载。留空为系统默认
 # docker_mount_flags:
 
-## A string of extra options to pass to the docker daemon.
-## This string should be exactly as you wish it to appear.
+## 传递给docker守护进程的额外选项字符串。
+## 此字符串应完全按照您希望的方式出现。
 # docker_options: ""

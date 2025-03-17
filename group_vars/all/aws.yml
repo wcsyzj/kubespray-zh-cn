@@ -1,5 +1,5 @@
-## To use AWS EBS CSI Driver to provision volumes, uncomment the first value
-## and configure the parameters below
+## 要使用AWS EBS CSI Driver来配置卷，请取消注释第一个值
+## 并配置以下参数
 # aws_ebs_csi_enabled: true
 # aws_ebs_csi_enable_volume_scheduling: true
 # aws_ebs_csi_enable_volume_snapshot: false

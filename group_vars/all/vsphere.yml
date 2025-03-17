@@ -1,16 +1,16 @@
-## Values for the external vSphere Cloud Provider
+## 外部vSphere云提供商的值
 # external_vsphere_vcenter_ip: "myvcenter.domain.com"
 # external_vsphere_vcenter_port: "443"
 # external_vsphere_insecure: "true"
-# external_vsphere_user: "administrator@vsphere.local" # Can also be set via the `VSPHERE_USER` environment variable
-# external_vsphere_password: "K8s_admin" # Can also be set via the `VSPHERE_PASSWORD` environment variable
+# external_vsphere_user: "administrator@vsphere.local" # 也可以通过`VSPHERE_USER`环境变量设置
+# external_vsphere_password: "K8s_admin" # 也可以通过`VSPHERE_PASSWORD`环境变量设置
 # external_vsphere_datacenter: "DATACENTER_name"
 # external_vsphere_kubernetes_cluster_id: "kubernetes-cluster-id"
 
-## Vsphere version where located VMs
+## 虚拟机所在的vSphere版本
 # external_vsphere_version: "6.7u3"
 
-## Tags for the external vSphere Cloud Provider images
+## 外部vSphere云提供商镜像的标签
 ## registry.k8s.io/cloud-pv-vsphere/cloud-provider-vsphere
 # external_vsphere_cloud_controller_image_tag: "v1.31.0"
 ## registry.k8s.io/csi-vsphere/syncer
@@ -24,9 +24,9 @@
 ## registry.k8s.io/sig-storage/csi-provisioner
 # vsphere_csi_provisioner_image_tag: "v3.1.0"
 ## registry.k8s.io/sig-storage/csi-resizer
-## makes sense only for vSphere version >=7.0
+## 仅对vSphere版本>=7.0有意义
 # vsphere_csi_resizer_tag: "v1.3.0"
 
-## To use vSphere CSI plugin to provision volumes set this value to true
+## 要使用vSphere CSI插件配置卷，请将此值设置为true
 # vsphere_csi_enabled: true
 # vsphere_csi_controller_replicas: 1

@@ -1,17 +1,17 @@
-# see roles/network_plugin/flannel/defaults/main.yml
+# 参见 roles/network_plugin/flannel/defaults/main.yml
 
-## interface that should be used for flannel operations
-## This is actually an inventory cluster-level item
+## 用于 flannel 操作的接口
+## 这实际上是集群级别的清单项
 # flannel_interface:
 
-## Select interface that should be used for flannel operations by regexp on Name or IP
-## This is actually an inventory cluster-level item
-## example: select interface with ip from net 10.0.0.0/23
-## single quote and escape backslashes
+## 通过名称或 IP 的正则表达式选择用于 flannel 操作的接口
+## 这实际上是集群级别的清单项
+## 示例：选择 IP 在 10.0.0.0/23 网段的接口
+## 使用单引号并转义反斜杠
 # flannel_interface_regexp: '10\\.0\\.[0-2]\\.\\d{1,3}'
 
-# You can choose what type of flannel backend to use: 'vxlan',  'host-gw' or 'wireguard'
-# please refer to flannel's docs : https://github.com/coreos/flannel/blob/master/README.md
+# 您可以选择使用哪种类型的 flannel 后端：'vxlan'、'host-gw' 或 'wireguard'
+# 请参阅 flannel 的文档：https://github.com/coreos/flannel/blob/master/README.md
 # flannel_backend_type: "vxlan"
 # flannel_vxlan_vni: 1
 # flannel_vxlan_port: 8472
