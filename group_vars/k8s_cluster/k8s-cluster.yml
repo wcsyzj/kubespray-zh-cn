@@ -77,7 +77,8 @@ kube_service_addresses: 10.233.0.0/18
 # 内部网络。使用时，它将从此范围分配 IP 地址给各个 pod。
 # 此网络必须在您的网络基础设施中未使用！
 kube_pods_subnet: 10.233.64.0/18
-
+kube_network_node_prefix: 22
+kubelet_max_pods: 500
 # 内部网络节点大小分配（可选）。这是为每个节点分配的 pod IP 地址分配的大小。请注意，每个节点的 pod 数量也受 kubelet_max_pods 变量的限制，默认值为 110。
 #
 # 示例：
@@ -91,7 +92,7 @@ kube_pods_subnet: 10.233.64.0/18
 #  - kube_pods_subnet: 10.233.64.0/18
 #  - kube_network_node_prefix: 25
 #  - kubelet_max_pods: 110
-kube_network_node_prefix: 24
+
 
 # 配置双栈网络（即同时支持 IPv4 和 IPv6）
 enable_dual_stack_networks: false
